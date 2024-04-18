@@ -55,7 +55,7 @@ const BasicTable: React.FC<{ address: string }> = ({ address }) => {
           </TableHead>
           <TableBody>
             {transactions.map((row: any, index: number) => (
-              index >= rowsPerPage * (page) && index <= rowsPerPage * (page + 1) &&
+              index >= rowsPerPage * (page) && index < rowsPerPage * (page + 1) &&
               <TableRow
                 key={row.hash}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}

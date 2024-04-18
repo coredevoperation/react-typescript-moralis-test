@@ -18,7 +18,7 @@ const useWalletAPI = () => {
 
     const getTransactions = async (address: string) => {
         try {
-            const response = await axios.get(`https://deep-index.moralis.io/api/v2.2/wallets/${address}/history?limit=1000`, config)
+            const response = await axios.get(`https://deep-index.moralis.io/api/v2.2/wallets/${address}/history?limit=100`, config)
 
             console.log(response);
             setTransactions(response.data.result);
