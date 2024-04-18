@@ -1,5 +1,7 @@
 import { Box, Button, TextField } from "@mui/material";
-import { FC, useRef, useState } from "react";
+import { useSetAtom } from "jotai";
+import { FC, useState } from "react";
+import { transactionsAtom } from "../store";
 
 interface AddressInputProps {
     setAddress: (val: string) => void;
@@ -15,6 +17,7 @@ const AddressInput: FC<AddressInputProps> = ({ setAddress }) => {
 
     const [addr, setAddr] = useState('');
     const [isValid, setIsValid] = useState(false);
+    const setTransactions = useSetAtom(transactionsAtom);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const inputValue = event.target.value;
@@ -25,7 +28,12 @@ const AddressInput: FC<AddressInputProps> = ({ setAddress }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         console.log(addr)
-        setAddress(addr);
+        if (isValid) {
+            setAddress(addr);
+        } else {
+            setTransactions([])
+            setAddress('');
+        }
     }
 
     return (
@@ -50,7 +58,7 @@ const AddressInput: FC<AddressInputProps> = ({ setAddress }) => {
                 <Button type="submit" variant="contained">Submit</Button>
 
             </Box>
-            {addr == '' ? <p style={{color: 'transparent'}}>Blank</p> :
+            {addr == '' ? <p style={{ color: 'transparent' }}>Blank</p> :
                 isValid ? (
                     <p style={{ color: 'green' }}>Valid Ethereum Address</p>
                 ) : (

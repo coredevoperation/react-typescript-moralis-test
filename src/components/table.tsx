@@ -6,25 +6,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import useWalletAPI from '../api/wallet';
 import { useAtom } from 'jotai';
 import { transactionsAtom } from '../store';
 import { Box } from '@mui/material';
-
-function createData(
-  hash: string,
-  summary: string
-) {
-  return { hash, summary };
-}
-
-const rows = [
-  createData('Frozen yoghurt', '159'),
-  createData('Ice cream sandwich', '237'),
-  createData('Eclair', '262'),
-  createData('Cupcake', '305'),
-  createData('Gingerbread', '356'),
-];
 
 const BasicTable: React.FC<{ address: string }> = ({ address }) => {
 
@@ -42,9 +26,14 @@ const BasicTable: React.FC<{ address: string }> = ({ address }) => {
         <Table sx={{ maxWidth: '100%' }} aria-label="simple table">
           <TableHead>
             <TableRow>
-              <TableCell style={{ color: 'blue' }}>Transaction Hash</TableCell>
-              <TableCell sx={{ display: { xs: 'none', lg: 'block' }, color: 'blue' }}>Block TimeStamp</TableCell>
-              <TableCell style={{ color: 'blue' }}>Summary</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>Transaction Hash</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>Method</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>Block</TableCell>
+              <TableCell style={{ color: '#2222aa', fontWeight: 'bold' }}>TimeStamp</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>From</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>To</TableCell>
+              <TableCell style={{ fontWeight: 'bold' }}>Value</TableCell>
+              <TableCell style={{ color: '#2222aa', fontWeight: 'bold' }}>Txn Fee</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -53,9 +42,15 @@ const BasicTable: React.FC<{ address: string }> = ({ address }) => {
                 key={row.hash}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
-                <TableCell align="left" style={{ maxWidth: '50vw', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap', textDecoration: 'underline' }} onClick={() => handleTableClicked(row)}>{row.hash}</TableCell>
-                <TableCell sx={{ display: { xs: 'none', lg: 'block' } }}>{row.block_timestamp}</TableCell>
-                <TableCell align="left" style={{ maxWidth: '30vw', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{row.summary}</TableCell>
+                {row && console.log(row.summary.split(' '))}
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap', color: '#2222aa' }} onClick={() => handleTableClicked(row)}>{row.hash}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap' }}>{row.method_label}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap', color: '#2222aa' }}>{row.block_number}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap' }}>{row.block_timestamp}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap' }}>{row.from_address_label ? row.from_address_label + ': ' : ''}{row.from_address}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap', color: '#2222aa' }}>{row.to_address_label ? row.to_address_label + ': ' : ''}{row.to_address}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap' }}>{row.summary.split(' ')[1]} {row.summary.split(' ')[2]}</TableCell>
+                <TableCell style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', textWrap: 'wrap' }}>{row.gas_price}</TableCell>
               </TableRow>
             ))}
           </TableBody>
